@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <title>DaoPaaS 示例DEMO</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="node_modules/@dao42/d42paas-front/dist/style.css"
+    />
+    <style>
+      body {
+        height: 100vh;
+        background: #151617;
+      }
+
+      #app {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .control {
+        width: 100%;
+      }
+      .container {
+        flex: 1;
+      }
+      .container,
+      .output {
+        display: flex;
+      }
+      .output {
+        height: 100%;
+        flex-direction: column;
+      }
+      .tree-section,
+      .output,
+      .browser-section,
+      .console-section,
+      .terminal-section {
+        flex: 1;
+      }
+      .editor-section {
+        flex: 2;
+      }
+      .tree-section,
+      .editor-section,
+      .browser-section,
+      .console-section,
+      .terminal-section {
+        border: 2px solid rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <form
+        action=""
+        id="select-form"
+        name="select-form"
+        class="select-form"
+        target="nm_iframe"
+        onsubmit="initDaoPasS()"
+      >
+        <select
+          name="select-env"
+          id="select-env"
+          onchange="selectEnvChange()"
+        ></select>
+        <select name="select-version" id="select-version"></select>
+        <input type="submit" value="获取ticket并初始化代码空间" />
+      </form>
+      <div id="control" class="control" style="display: none">
+        <button id="btn" disabled>激活中</button>
+      </div>
+      <div class="container">
+        <div class="tree-section"></div>
+        <div class="editor-section"></div>
+        <div class="output">
+          <div class="browser-section"></div>
+          <div class="console-section"></div>
+          <div class="terminal-section"></div>
+        </div>
+      </div>
+    </div>
+    <iframe id="id_iframe" name="nm_iframe" style="display: none"></iframe>
+    <script type="text/javascript" src="bundle.js"></script>
+  </body>
+</html>

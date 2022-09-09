@@ -1,0 +1,18 @@
+{
+	"scripts": {
+		"start": "ws -p 8080 --rewrite '/api/v1/(.*) -> https://www.1024paas.com/api/v1/$1'",
+		"build": "browserify main.js -o bundle.js"
+	},
+	"dependencies": {
+		"@dao42/d42paas-front": "^0.9.69",
+		"axios": "^0.27.2",
+		"crypto-js": "^4.1.1",
+		"uuid": "^9.0.0"
+	},
+	"devDependencies": {
+		"browserify": "^17.0.0",
+		"http-server": "^14.1.1",
+		"local-web-server": "^5.2.1",
+		"serve": "^14.0.1"
+	}
+}
