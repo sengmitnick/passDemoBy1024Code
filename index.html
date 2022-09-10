@@ -15,6 +15,7 @@
     />
     <style>
       body {
+        margin: 0;
         height: 100vh;
         background: #151617;
       }
@@ -23,12 +24,14 @@
         display: flex;
         flex-direction: column;
         height: 100%;
+        overflow: hidden;
       }
       .control {
         width: 100%;
       }
       .container {
         flex: 1;
+        overflow: hidden;
       }
       .container,
       .output {
@@ -45,6 +48,16 @@
       .terminal-section {
         flex: 1;
       }
+      .tree-section,
+      .editor-section,
+      .output {
+        min-width: 0px;
+      }
+      .browser-section,
+      .console-section,
+      .terminal-section {
+        min-height: 0px;
+      }
       .editor-section {
         flex: 2;
       }
@@ -53,6 +66,7 @@
       .browser-section,
       .console-section,
       .terminal-section {
+        overflow: hidden;
         border: 2px solid rgba(0, 0, 0, 0.5);
       }
     </style>

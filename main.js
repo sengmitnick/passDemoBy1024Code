@@ -8,6 +8,8 @@ const {
   getTicketApi,
 } = require("./http");
 
+const versionMap = {};
+
 const selectEnvChange = function () {
   const selectVersion = document.getElementById("select-version");
   selectVersion.options.length = 0;
@@ -19,17 +21,7 @@ const selectEnvChange = function () {
   }
 };
 
-const versionMap = {};
-
 async function main() {
-  const query = new URLSearchParams(window.location.search);
-  const ticket = query.get("ticket");
-  if (ticket) {
-    window.ticket = ticket;
-    const selectForm = document.getElementById("select-form");
-    selectForm.style.display = "none";
-    return;
-  }
   const environments = await getEnvironmentsApi();
   const selectEnv = document.getElementById("select-env");
   environments.forEach((env) => {
@@ -39,8 +31,7 @@ async function main() {
   selectEnvChange();
 }
 
-window.selectEnvChange = selectEnvChange;
-window.initDaoPasS = async function () {
+async function initDaoPasS() {
   const selectForm = document.getElementById("select-form");
   const environmentVerId =
     document.forms["select-form"]["select-version"].value;
@@ -52,13 +43,7 @@ window.initDaoPasS = async function () {
     const codeZoneId = await getCodeZoneIdApi(environmentVerId);
     const playgroundId = await getPlaygroundIdApi(codeZoneId);
     window.ticket = await getTicketApi(playgroundId, userInfo);
-    const link = document.createElement("a");
-    link.className = "link";
-    link.href = window.location.origin + "/?ticket=" + window.ticket;
-    link.target = "_blank";
-    link.innerText = "在新标签打开进行多端协同";
     selectForm.style.display = "none";
-    document.getElementById("control").appendChild(link);
   }
 
   if (window.ticket) {
@@ -160,6 +145,9 @@ window.initDaoPasS = async function () {
       }
     });
   }
-};
+}
+
+window.selectEnvChange = selectEnvChange;
+window.initDaoPasS = initDaoPasS;
 
 main();
