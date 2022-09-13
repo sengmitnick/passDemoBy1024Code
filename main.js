@@ -53,7 +53,7 @@ async function initDaoPasS() {
   const userInfo = { userId: uuid.v4().replace(/-/g, "") };
   userInfo.username = userInfo.userId.slice(0, 6);
   if (environmentVerId && !playgroundId) {
-    // 获取ticket(票)，获取到的ticket应该放置到后端，同一个票不同用户即可实现协同功能
+    // 获取playgroundId，获取到的playgroundId应该放置到后端，同一个playgroundId不同用户即可实现协同功能
     const codeZoneId = await getCodeZoneIdApi(environmentVerId);
     playgroundId = await getPlaygroundIdApi(codeZoneId);
 
@@ -65,6 +65,7 @@ async function initDaoPasS() {
     document.getElementById("control").appendChild(link);
   }
 
+  // 通过 playgroundId 获取 ticket
   const ticket = await getTicketApi(playgroundId, userInfo);
   selectForm.style.display = "none";
 
