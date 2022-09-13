@@ -21,7 +21,20 @@ const selectEnvChange = function () {
   }
 };
 
+function getPlaygroundId() {
+  const query = new URLSearchParams(window.location.search);
+  const ticket = query.get("playgroundId");
+  return ticket;
+}
+
 async function main() {
+  const playgroundId = getPlaygroundId();
+  if (playgroundId) {
+    const selectForm = document.getElementById("select-form");
+    selectForm.style.display = "none";
+    initDaoPasS();
+    return;
+  }
   const environments = await getEnvironmentsApi();
   const selectEnv = document.getElementById("select-env");
   environments.forEach((env) => {
@@ -32,25 +45,34 @@ async function main() {
 }
 
 async function initDaoPasS() {
+  let playgroundId = getPlaygroundId();
   const selectForm = document.getElementById("select-form");
   const environmentVerId =
     document.forms["select-form"]["select-version"].value;
   // 随机生成临时用户
   const userInfo = { userId: uuid.v4().replace(/-/g, "") };
   userInfo.username = userInfo.userId.slice(0, 6);
-  if (environmentVerId && !window.ticket) {
+  if (environmentVerId && !playgroundId) {
     // 获取ticket(票)，获取到的ticket应该放置到后端，同一个票不同用户即可实现协同功能
     const codeZoneId = await getCodeZoneIdApi(environmentVerId);
-    const playgroundId = await getPlaygroundIdApi(codeZoneId);
-    window.ticket = await getTicketApi(playgroundId, userInfo);
-    selectForm.style.display = "none";
+    playgroundId = await getPlaygroundIdApi(codeZoneId);
+
+    const link = document.createElement("a");
+    link.className = "link";
+    link.href = window.location.origin + "/?playgroundId=" + playgroundId;
+    link.target = "_blank";
+    link.innerText = "在新标签打开进行多端协同";
+    document.getElementById("control").appendChild(link);
   }
 
-  if (window.ticket) {
+  const ticket = await getTicketApi(playgroundId, userInfo);
+  selectForm.style.display = "none";
+
+  if (ticket) {
     // 创建实例
     const dao = new DaoPaaS({
       tenantId: "1",
-      ticket: window.ticket, // ticket(票)
+      ticket, // ticket(票)
       userInfo, // 用户信息
     });
     window.dao = dao;
